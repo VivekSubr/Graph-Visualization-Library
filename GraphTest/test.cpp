@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "GraphAlgo.h"
+#include "GraphWriter.h"
 #include "gtest/gtest.h"
 using namespace std;
 using ::testing::InitGoogleTest;
@@ -30,7 +31,8 @@ TEST(Graph, Visualize)
 	pGraph.AddNodes({ {0, "Node0"}, {1, "Node1"}, {2, "Node2" }, {3, "Node3"}, {4, "Node4"} });
 	pGraph.AddEdges({ {0, 1, 1 }, {0, 2, 1 }, {1, 2, 1}, {3, 4, 1} });
 
-	pGraph.Visualize();
+    CGraphWriter pWriter(pGraph);
+	pWriter.Visualize();
 }
 
 TEST(GraphAlgo, Djikstra)

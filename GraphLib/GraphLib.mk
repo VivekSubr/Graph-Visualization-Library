@@ -1,4 +1,4 @@
-BOOST_DIR=C:/boost/boost_1_69_0
+BOOST_DIR=../Dependencies/boost/boost_1_69_0
 CXX=g++
 CFLAGS=-I$(BOOST_DIR)
 
@@ -14,5 +14,6 @@ libGraph.a: *.cpp *.h
 	$(CXX) -c Graph.cpp GraphAlgo.cpp GraphWriter.cpp $(CFLAGS)
 	ar rvs libGraph.a Graph.o GraphAlgo.o GraphWriter.o
 	rm -f *.o
+	mkdir -p $(BUILD_DIR)
 	mv libGraph.a $(BUILD_DIR)
 	
