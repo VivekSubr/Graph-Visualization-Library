@@ -1,6 +1,8 @@
 #include "GraphWriter.h"
 #include "boost/process.hpp"
+#include "boost/process/windows.hpp"
 #include "Config.h"
+#include <iostream>
 USING_STD using std::deque;
 namespace bp  = boost::process;// I didn't use _popen, as that pops up the Cmd window 
 namespace fs  = boost::filesystem;
@@ -11,7 +13,7 @@ CGraphWriter::CGraphWriter(CGraph& pGraph):m_pGraph(pGraph)
 
 fs::path CGraphWriter::WriteDOT()
 { //uses BFS 
-    fs::path fpDot = CConfig::GetInstance()->GetExePath() / fs::path("Graphdot.gz");
+    fs::path fpDot = fs::current_path() / fs::path("Graphdot.gz");
 	std::ofstream fDot(fpDot.string());
 	fDot << "graph { \n";
 	
@@ -41,8 +43,10 @@ fs::path CGraphWriter::WriteDOT()
 
 void CGraphWriter::Visualize(GraphOutType Type)
 {
-    fs::path fpDot = WriteDOT();
-
-	bp::opstream  m_Write;
-	bp::child     m_Plot;
+	try 
+	{
+		fs::path fpDot = WriteDOT();
+		bp::system(bp::exe = "dot", bp::args = { "-Tpng Graphdot.gz", "-o Out.png" }); //for this to work, dot has to be added to path variable!
+	}
+	catch (std::exception& ex) { std::cout << "CGraphWriter::Visualize " << ex.what(); }
 }

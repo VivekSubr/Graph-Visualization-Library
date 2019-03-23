@@ -6,6 +6,7 @@ class CConfig
 {
 	static CConfig*         m_instance;
 	boost::filesystem::path m_ExePath;
+	boost::filesystem::path m_DotExe;
 
 	CConfig();
 public:
@@ -13,7 +14,7 @@ public:
 	void   LoadConfig(const std::string&);
 
 	boost::filesystem::path GetExePath() { return m_ExePath; }
-
+	boost::filesystem::path GetDotPath() { return m_DotExe;  }
 	~CConfig() = delete;
 };
 
