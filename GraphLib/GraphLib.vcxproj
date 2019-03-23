@@ -125,14 +125,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GraphAlgo.cpp" />
     <ClCompile Include="GraphWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GraphAlgo.h" />
     <ClInclude Include="GraphWriter.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

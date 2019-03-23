@@ -4,6 +4,8 @@
 #ifndef GRAPH_WRITER_H
 #define GRAPH_WRITER_H
 
+enum class GraphOutType { PNG };
+
 class CGraphWriter
 {
     CGraph m_pGraph;
@@ -12,7 +14,7 @@ class CGraphWriter
 public:
     CGraphWriter(CGraph&);
     
-    void Visualize();
+    void Visualize(GraphOutType);
     CGraphWriter() = default;
 };
 

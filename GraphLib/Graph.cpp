@@ -2,13 +2,9 @@
 #include <algorithm>
 #include <fstream>
 #include <deque>
-//#include "boost/dll.hpp"
-//#include "boost/process.hpp"
 #include "Utility.h"
 USING_STD
 USING_STD_MEMORY
-//namespace dll = boost::dll;
-//namespace bp  = boost::process;// I didn't use _popen, as that pops up the Cmd window 
 
 CGraph::CGraph(GraphType Type) : m_Type(Type)
 {

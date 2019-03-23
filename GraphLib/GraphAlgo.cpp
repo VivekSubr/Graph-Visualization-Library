@@ -3,7 +3,7 @@
 #include <deque>
 #include <queue>
 #include <functional>
-using std::string; using std::deque; using std::runtime_error; using std::map; using std::vector;
+USING_STD using std::deque;
 
 CGraphAlgo::CGraphAlgo(CGraph* pGraph): m_pGraph(nullptr)
 {
