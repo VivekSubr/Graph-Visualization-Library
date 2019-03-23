@@ -47,7 +47,7 @@ void CGraph::AddEdge(int index1, int index2, int iWeight)
 
 		m_EdgeAr.push_back(pEdge);
 	}
-	catch (std::out_of_range& ex) { throw runtime_error("index not found"); }
+	catch (std::out_of_range& ex) { throw ex; }
 }
 
 void CGraph::AddEdges(std::initializer_list<std::tuple<int, int, int>>&& InitList)
