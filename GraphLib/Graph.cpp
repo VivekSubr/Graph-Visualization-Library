@@ -52,6 +52,7 @@ Node* CGraph::GetNodeAt(int index)
 void CGraph::ResetFlags()
 {
 	std::for_each(m_AdjList.begin(), m_AdjList.end(), [](auto MapEle) { MapEle.second->Flag = false; });
+	std::for_each(m_Edges.begin(), m_Edges.end(), [](auto MapEle) { MapEle.second->Flag = false; });
 }
 
 Edge* CGraph::GetEdgeAt(int Node1, int Node2)
