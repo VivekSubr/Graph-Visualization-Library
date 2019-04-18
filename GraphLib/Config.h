@@ -3,7 +3,7 @@
 #pragma once
 
 class CConfig
-{
+{ //Singleton class to store configuration.
 	static CConfig*         m_instance;
 	boost::filesystem::path m_ExePath;
 	boost::filesystem::path m_DotExe;

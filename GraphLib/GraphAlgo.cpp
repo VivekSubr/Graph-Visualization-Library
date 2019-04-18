@@ -3,7 +3,7 @@
 #include <deque>
 #include <queue>
 #include <functional>
-USING_STD using std::deque;
+USING_STD using std::deque; using std::map;
 
 CGraphAlgo::CGraphAlgo(CGraph* pGraph): m_pGraph(nullptr)
 {
@@ -38,7 +38,7 @@ bool CGraphAlgo::DFS(int iRoot, int iNode)
 	for (auto It : N->Connections)
 	{
 		if (It->index == iNode) return true;
-		if (!It->Flag) DFS(It->Flag, iNode);
+		if (!It->Flag) DFS(It->index, iNode);
 	} return false;
 }
 
@@ -54,30 +54,36 @@ bool CGraphAlgo::IsConnected(int iNode1, int iNode2, SearchAlgo Algo)
 
 map<int, int> CGraphAlgo::Djikstra(int iRoot)
 {
-	auto Compare = [](Node* N1, Node* N2) { return N1->iVal > N2->iVal; };
-	std::priority_queue<Node*, vector<Node*>, decltype(Compare)> Q(Compare); //min priority queue
-	Q.push(m_pGraph->GetNodeAt(iRoot));
+	auto Compare = [](pair<int, Node*>& P1, pair<int, Node*>& P2) { return P1.first > P2.first; };
+	std::priority_queue<pair<int, Node*>, vector<pair<int, Node*>>, decltype(Compare)> Q(Compare); //min priority queue, with comparision on
+	                                                                                               //distance from source  
+	Q.push({ 0, m_pGraph->GetNodeAt(iRoot)}); //Distance of root from itself is zero.
 
 	map<int, int> Shortest_Path_Map;
 	/* Initialize */
 	vector<int> Indices = m_pGraph->GetNodeIndices();
 	for (int index : Indices) { Shortest_Path_Map.insert({ index, INF }); }
+	Shortest_Path_Map.at(iRoot) = 0;
 
 	while (!Q.empty())
 	{
-		Node *N = Q.top(); Q.pop();
-		for (auto Neighbour : N->Connections)
+		pair<int, Node*> temp = Q.top(); Q.pop();
+		for (auto Neighbour : temp.second->Connections)
 		{
-			Edge* E = m_pGraph->GetEdgeAt(iRoot, Neighbour->index);
+			Edge* E = m_pGraph->GetEdgeAt(temp.second->index, Neighbour->index);
 			assert(E != nullptr);
+			if (E->Flag) continue; //If edge already visited, continue
 
-			int tentative_distance = Shortest_Path_Map.at(Neighbour->index) + E->iWeight;
+			int tentative_distance = temp.first + E->iWeight;
 			if (tentative_distance < Shortest_Path_Map.at(Neighbour->index))
 			{
-				Q.push(Neighbour.get());
+				Q.push({ tentative_distance, Neighbour.get() }); 
 				Shortest_Path_Map.at(Neighbour->index) = tentative_distance;
-			}
+			} E->Flag = true;
         }
-	} return Shortest_Path_Map;
+	} 
+	
+	m_pGraph->ResetFlags();
+	return Shortest_Path_Map;
 }
 

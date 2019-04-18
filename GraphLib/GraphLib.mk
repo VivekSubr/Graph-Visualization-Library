@@ -11,8 +11,8 @@ release: BUILD_DIR=../release
 release: libGraph.a
 
 libGraph.a: *.cpp *.h
-	$(CXX) -c Graph.cpp GraphAlgo.cpp GraphWriter.cpp $(CFLAGS)
-	ar rvs libGraph.a Graph.o GraphAlgo.o GraphWriter.o
+	$(CXX) -c Graph.cpp GraphAlgo.cpp GraphWriter.cpp Config.cpp $(CFLAGS)
+	ar rvs libGraph.a Graph.o GraphAlgo.o GraphWriter.o Config.o
 	rm -f *.o
 	mkdir -p $(BUILD_DIR)
 	mv libGraph.a $(BUILD_DIR)

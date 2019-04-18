@@ -1,7 +1,7 @@
 #include "Config.h"
 #include "json.hpp"
 #include "boost/dll.hpp"
-using std::string;
+using std::string; using std::exception;
 using json   = nlohmann::json;
 namespace fs = boost::filesystem;
 
@@ -24,8 +24,10 @@ CConfig* CConfig::GetInstance()
 void CConfig::LoadConfig(const string& sConfigFile)
 {
 	std::ifstream fConfig(sConfigFile);
-    json jConfig = json::parse(fConfig);
+	if (!fConfig.good()) throw exception("config.json not found");
 
-    string temp = jConfig.at("dotpath"); //hack to get this working, tofix
-	m_DotExe    = fs::path(temp);
+	json jConfig = json::parse(fConfig); 
+
+	string stemp = jConfig.at("dotpath"); //TODO - elliminate temp variable used to force typecast
+	m_DotExe     = fs::path(stemp);
 }

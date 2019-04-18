@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <fstream>
 #include <deque>
-#include "Utility.h"
 USING_STD
 USING_STD_MEMORY
 
@@ -31,19 +30,13 @@ void CGraph::AddNodes(std::initializer_list<pair<int, string>>&& InitList)
 
 void CGraph::AddEdge(int index1, int index2, int iWeight)
 {
-	try
-	{
-		m_AdjList.at(index1)->Connections.push_back(m_AdjList.at(index2));
-		m_AdjList.at(index2)->Connections.push_back(m_AdjList.at(index1));
+	m_AdjList.at(index1)->Connections.insert(m_AdjList.at(index2));
+	m_AdjList.at(index2)->Connections.insert(m_AdjList.at(index1));
 
-		Edge pEdge;
-		pEdge.Node1   = m_AdjList.at(index1).get();
-		pEdge.Node2   = m_AdjList.at(index2).get();
-		pEdge.iWeight = iWeight;
+	if (m_Edges.find(pair<int, int>(index2, index1)) != m_Edges.end()) return; //unordered_map, so all these lookups O(1)... 
 
-		m_EdgeAr.push_back(pEdge);
-	}
-	catch (std::out_of_range& ex) { throw ex; }
+	std::shared_ptr<Edge> pEdge(new Edge(m_AdjList.at(index1).get(), m_AdjList.at(index2).get(), iWeight));
+	m_Edges.insert({ pair<int, int>(index1, index2), pEdge });
 }
 
 void CGraph::AddEdges(std::initializer_list<std::tuple<int, int, int>>&& InitList)
@@ -63,10 +56,13 @@ void CGraph::ResetFlags()
 
 Edge* CGraph::GetEdgeAt(int Node1, int Node2)
 {
-	for (auto Edge = m_EdgeAr.begin(); Edge != m_EdgeAr.end(); Edge++)
+	if (m_Edges.find(pair<int, int>(Node1, Node2)) != m_Edges.end())
 	{
-		if (Edge->Node1->index == Node1 || Edge->Node2->index == Node2) return &*Edge;
-		if (Edge->Node1->index == Node2 || Edge->Node2->index == Node1) return &*Edge;
+		return m_Edges.at(pair<int, int>(Node1, Node2)).get();
+	} 
+	else if (m_Edges.find(pair<int, int>(Node2, Node1)) != m_Edges.end())
+	{
+		return m_Edges.at(pair<int, int>(Node2, Node1)).get();
 	} return nullptr;
 }
 

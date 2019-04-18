@@ -126,17 +126,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="facade\DotFacade.cpp" />
+    <ClCompile Include="facade\ImMagikFacade.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GraphAlgo.cpp" />
-    <ClCompile Include="GraphWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="facade\DotFacade.h" />
+    <ClInclude Include="facade\ImMagikFacade.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GraphAlgo.h" />
-    <ClInclude Include="GraphWriter.h" />
     <ClInclude Include="json.hpp" />
-    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

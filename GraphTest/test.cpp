@@ -1,10 +1,12 @@
 #include "Graph.h"
 #include "GraphAlgo.h"
-#include "GraphWriter.h"
+#include "facade/DotFacade.h"
 #include "gtest/gtest.h"
+#include "Config.h"
 using namespace std;
 using ::testing::InitGoogleTest;
 using ::testing::Test;
+namespace fs = boost::filesystem;
 
 int main(int argc, char **argv) {
   InitGoogleTest(&argc, argv);
@@ -25,15 +27,19 @@ TEST(GraphAlgo, IsConnected)
 	ASSERT_FALSE(pAlgo.IsConnected(0, 4, SearchAlgo::DFS));
 }
 
-TEST(Graph, Visualize)
+TEST(Visualize, Image)
 {
 	CGraph pGraph(GraphType::UnDirected);
 	pGraph.AddNodes({ {0, "Node0"}, {1, "Node1"}, {2, "Node2" }, {3, "Node3"}, {4, "Node4"} });
 	pGraph.AddEdges({ {0, 1, 1 }, {0, 2, 1 }, {1, 2, 1}, {3, 4, 1} });
 
-    CGraphWriter pWriter(pGraph);
-	pWriter.Visualize(GraphOutType::PNG);
-}
+	CDotFacade pDot;
+	fs::path fpDot = pDot.WriteDot(pGraph);
+	fs::path fpPNG = pDot.CreateImage(pGraph, ImageType::JPG);
+
+	ASSERT_TRUE(fs::exists(fpDot));
+	ASSERT_TRUE(fs::exists(fpPNG));
+} 
 
 TEST(GraphAlgo, Djikstra)
 {
@@ -50,4 +56,4 @@ TEST(GraphAlgo, Djikstra)
 	EXPECT_EQ(ShortestPaths.at(2),  2);
 	EXPECT_EQ(ShortestPaths.at(3),  INF);
 	EXPECT_EQ(ShortestPaths.at(4),  INF);
-}
+} 
