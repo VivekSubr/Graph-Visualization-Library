@@ -35,10 +35,10 @@ TEST(Visualize, Image)
 
 	CDotFacade pDot;
 	fs::path fpDot = pDot.WriteDot(pGraph);
-	fs::path fpPNG = pDot.CreateImage(pGraph, ImageType::JPG);
+	fs::path fpJPG = pDot.CreateImage(pGraph, ImageType::JPG);
 
 	ASSERT_TRUE(fs::exists(fpDot));
-	ASSERT_TRUE(fs::exists(fpPNG));
+	ASSERT_TRUE(fs::exists(fpJPG));
 } 
 
 TEST(GraphAlgo, Djikstra)

@@ -2,16 +2,9 @@
 #include <deque>
 #include "../Config.h"
 #include "boost/process.hpp"
-#include "boost/process/windows.hpp"
 namespace fs = boost::filesystem;
 namespace bp = boost::process;// I didn't use _popen, as that pops up the Cmd window 
 USING_STD using std::deque; using std::exception;
-
-CDotFacade::CDotFacade():m_Plot(CConfig::GetInstance()->GetDotPath(), bp::std_in = m_Write, bp::windows::hide)
-{
-	if (!m_Plot.valid())   { throw exception("Could not load dot.exe");  }
-	if (!m_Plot.running()) { throw exception("Could not start dot.exe"); }
-}
 
 fs::path CDotFacade::WriteDot(CGraph& pGraph)
 {
@@ -54,17 +47,7 @@ fs::path CDotFacade::CreateImage(CGraph& pGraph, ImageType Type)
 	   default: throw exception("Unknown Type");
 	}
 
-	string sCmd = "-T" + sOutType + " -oOut." + sOutType + " " + fpDotfile.string();
-	m_Write << sCmd;
-	m_Write << "\n";
-	return fpDotfile;
+	bp::system(CConfig::GetInstance()->GetDotPath(), "-T" + sOutType, "-O", fpDotfile.string(), bp::std_out > "dot.log");
+	return fs::path(fpDotfile.string() + "." + sOutType);
 }
 
-CDotFacade::~CDotFacade()
-{
-	m_Write.flush();
-	m_Write.pipe().close();
-
-	m_Plot.wait();
-	int ret = m_Plot.exit_code();
-}
