@@ -10,7 +10,10 @@ fs::path CDotFacade::WriteDot(CGraph& pGraph)
 {
 	fs::path fpDot = fs::current_path() / fs::path("Graphdot.gz");
 	std::ofstream fDot(fpDot.string());
-	fDot << "graph { \n";
+
+	if      (pGraph.GetType() == GraphType::UnDirected)  fDot << "graph { \n";
+	else if (pGraph.GetType() == GraphType::Directed)    fDot << "digraph { \n";
+	else throw exception("unknown type");
 
 	deque<Node*> Q;
 	Q.push_back(pGraph.GetNodeAt(*pGraph.GetNodeIndices().begin()));
