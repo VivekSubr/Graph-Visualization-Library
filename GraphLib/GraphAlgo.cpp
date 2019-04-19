@@ -1,5 +1,4 @@
 #include "GraphAlgo.h"
-#include <cassert>
 #include <deque>
 #include <queue>
 #include <functional>
@@ -71,8 +70,7 @@ map<int, int> CGraphAlgo::Djikstra(int iRoot)
 		for (auto Neighbour : temp.second->Connections)
 		{
 			Edge* E = m_pGraph->GetEdgeAt(temp.second->index, Neighbour->index);
-			assert(E != nullptr);
-			if (E->Flag) continue; //If edge already visited, continue
+			if (E == nullptr || E->Flag) continue; //If edge already visited, continue
 
 			int tentative_distance = temp.first + E->iWeight;
 			if (tentative_distance < Shortest_Path_Map.at(Neighbour->index))
